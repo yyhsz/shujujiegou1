@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <style>
+    #list {
+      height: 60px;
+      overflow: hidden;
+    }
+
+    #list>li {
+      height: 20px;
+    }
+  </style>
+</head>
+
+<body>
+  <div id="wrapper">
+  </div>
+  <script>
+    const NOTICE_LIST = [
+      '恭喜xxxxxxxx',
+      '恭喜uyyyy',
+      '恭喜sdfgasasdg',
+      '恭喜1111111',
+      '恭喜222222222',
+      '恭喜333333333333',
+      '恭喜444444',
+    ]
+    const ul = document.createElement('ul')
+    NOTICE_LIST.forEach(item => {
+      const li = document.createElement('li')
+      li.textContent = item
+      ul.appendChild(li)
+    })
+    NOTICE_LIST.forEach(item => {
+      const li = document.createElement('li')
+      li.textContent = item
+      ul.appendChild(li)
+    })
+    wrapper.appendChild(ul)
+
+    let top = ul.getBoundClientRect().top
+    let flag = 0
+    setInterval(() => {
+      flag+=5
+      if(flag === 20*NOTICE_LIST.length){
+        ul.style.transform = `translateY(${20*NOTICE_LIST.length}px)`
+        return 
+      }
+      ul.style.transform = `translateY(-5px)`
+    }, 16)
+  </script>
+</body>
+
+</html>
