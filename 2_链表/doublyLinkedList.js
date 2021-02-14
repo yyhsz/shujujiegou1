@@ -1,7 +1,3 @@
-// 链表常见操作 
-// append最后插入  insert指定位置插入  get获取特定位置的项
-// indexOf找到元素对应的索引  update修改某个位置的元素 removeAt移除指定位置项
-// remove(ele)移除对应元素 isEmpty size
 class Node {
   constructor(ele) {
     this.ele = ele
@@ -93,18 +89,19 @@ class LinkedList {
   }
   update(pos, ele) {
     //判断越界
-    if (pos < 0 || pos > this.length - 1) return false
+    // if (pos < 0 || pos > this.length - 1) return false
 
-    let currentNode = this.head
-    while (pos > 0) {
-      currentNode = currentNode.next
-      pos--
-    }
-    currentNode.ele = ele
+    // let currentNode = this.head
+    // while (pos > 0) {
+    //   currentNode = currentNode.next
+    //   pos--
+    // }
+    // currentNode.ele = ele
 
     //更简单的方法
-    // this.removeAt(pos)
-    // this.insert(pos, ele)
+    const res = this.removeAt(pos)
+    this.insert(pos, ele)
+    return res
   }
   remove(ele) {
     // let i = 0, currentNode = this.head
@@ -130,17 +127,105 @@ class LinkedList {
     return this.length === 0
   }
 }
-const linkedList = new LinkedList()
-linkedList.append("aaa")
-linkedList.append("bbb")
-linkedList.append("ccc")
-
-linkedList.insert(0, "yyh")
-linkedList.update(0, 'bbt')
-// linkedList.removeAt(1)
-linkedList.remove("bbt")
-
-console.log()
-console.log(linkedList)
 
 
+class DoublyNode extends Node {
+  constructor(ele) {
+    super(ele)
+    this.pre = null
+  }
+
+}
+
+//双向链表常用方法与单向链表相同，部分方法需要重写
+class DoublyLinkedList extends LinkedList {
+  constructor() {
+    super()
+    this.tail = null
+  }
+  append(ele) {
+    const node = new DoublyNode(ele)
+    if (this.length === 0) {
+      this.head = node
+      this.tail = node
+    } else {
+      this.tail.next = node
+      node.pre = this.tail
+      this.tail = node
+    }
+    this.length++
+  }
+  insert(pos, ele) {
+    //越界判断
+    if (pos < 0 || pos > this.length) return false
+
+    const node = new DoublyNode(ele)
+    //由于tail节点的存在，考虑的情况跟单向链表有所不同
+    if (this.length === 0) {
+      this.head = node
+      this.tail = node
+    } else if (pos === 0) {
+      node.next = this.head
+      this.head.pre = node
+      this.head = node
+    } else if (pos === this.length) {
+      node.pre = this.tail
+      this.tail.next = node
+      this.tail = node
+    } else {
+      let currentNode = this.head, i = 0
+      while (i < pos) {
+        currentNode = currentNode.next
+        i++
+      }
+      //先让新节点链接两个旧节点,再断开旧节点
+      node.next = currentNode
+      node.pre = currentNode.pre
+      currentNode.pre.next = node
+      currentNode.pre = node
+    }
+    this.length++
+  }
+  removeAt(pos) {
+    //越界判断
+    if (pos < 0 || pos > this.length - 1) return false
+
+    let currentNode = this.head
+    if (this.length === 1) { //length===1，pos一定为0
+      this.head = null
+      this.tail = null
+    } else if (pos === 0) {
+      this.head = this.head.next
+      this.head.pre = null
+    } else if (pos === this.length - 1) {
+      currentNode = this.tail
+      this.tail = this.tail.pre
+      this.tail.next = null
+    } else {
+      let i = 0
+      while (i < pos) {
+        currentNode = currentNode.next
+        console.log(currentNode, "currentNode")
+        i++
+        console.log(i)
+      }
+      currentNode.next.pre = currentNode.pre
+      currentNode.pre.next = currentNode.next
+    }
+    this.length--
+    return currentNode
+  }
+}
+
+const dbLinkedList = new DoublyLinkedList()
+
+dbLinkedList.append("aaa")
+dbLinkedList.append("bbb")
+dbLinkedList.append("ccc")
+
+dbLinkedList.insert(0, "yyh")
+dbLinkedList.insert(3, "bgt")
+
+// dbLinkedList.removeAt(3)
+dbLinkedList.remove("yyh")
+console.log(dbLinkedList)
