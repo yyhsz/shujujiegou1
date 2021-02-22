@@ -1,5 +1,5 @@
-//广度优先搜索实现
-//广度优先搜索像是从一个点开始，不断向外辐射，直到找到所有点位置
+//深度优先搜索实现
+//深度优先搜索
 class Queue {
   constructor() {
     this.items = []
@@ -57,8 +57,8 @@ class Graph {
     this.vertex.forEach(v => { colors[v] = "white" })
     return colors
   }
-  // 广度优先
-  bfs(initV, handler) { //接收初始化顶点
+  // 深度优先
+  dfs(initV, handler) { //接收初始化顶点
     if (!initV) return false //没有初始点
     const colors = this.initColor()
     const queue = new Queue()
@@ -93,4 +93,4 @@ g.addEdge("D", "H")
 g.addEdge("B", "E")
 g.addEdge("B", "F")
 g.addEdge("E", "I")
-g.bfs(g.vertex[0], (v) => { console.log(v) })
+// g.dfs(g.vertex[0], (v) => { console.log(v) })
