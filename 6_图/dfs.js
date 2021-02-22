@@ -1,5 +1,5 @@
 //深度优先搜索实现
-//深度优先搜索
+//深度优先搜索类似于树的先序遍历
 class Queue {
   constructor() {
     this.items = []
@@ -51,32 +51,23 @@ class Graph {
       console.log(str)
     })
   }
-  //为了遍历初始化颜色
-  initColor() {
+  //为了遍历,初始化状态
+  initState() {
     const colors = {}
-    this.vertex.forEach(v => { colors[v] = "white" })
+    this.vertex.forEach(v => { colors[v] = false })
     return colors
   }
-  // 深度优先
-  dfs(initV, handler) { //接收初始化顶点
-    if (!initV) return false //没有初始点
-    const colors = this.initColor()
-    const queue = new Queue()
-    //入队的时候置灰
-    queue.enqueue(initV)
-    colors[initV] = "grey"
-    //
-    while (!queue.isEmpty()) {
-      const v = queue.dequeue()
-      this.edges[v].forEach(v1 => {
-        if (colors[v1] === "white") { //只有白色才能入队，避免重复入队
-          colors[v1] = "grey" && queue.enqueue(v1)
-        }
-      })
-      //访问处理v
-      handler(v)
-      colors[v] = "black"
-    }
+  // 深度优先,递归实现
+  dfs(v, state, handler) { //接收初始化顶点
+    if (!v) return false //没有初始点
+    // const state = this.initColor()
+    state[v] = true
+    handler(v)
+    this.edges[v].forEach(v1 => {
+      if (state[v1] === false) {
+        this.dfs(v1, state, handler)
+      }
+    })
   }
 }
 const g = new Graph()
@@ -93,4 +84,4 @@ g.addEdge("D", "H")
 g.addEdge("B", "E")
 g.addEdge("B", "F")
 g.addEdge("E", "I")
-// g.dfs(g.vertex[0], (v) => { console.log(v) })
+g.dfs(g.vertex[0], g.initState(), (v) => { console.log(v) })
