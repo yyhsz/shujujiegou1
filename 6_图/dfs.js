@@ -73,7 +73,7 @@ class Graph {
 const g = new Graph()
 const vertexs = ["A", "B", "C", "D", "E", "F", "G", "H", "I"]
 vertexs.forEach(v => g.addVertex(v))
-// g.addVertex("A")
+
 g.addEdge("A", "B")
 g.addEdge("A", "C")
 g.addEdge("A", "D")
