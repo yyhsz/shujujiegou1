@@ -72,7 +72,6 @@ class HashTable {
         this.resize(this.getPrime(this.limit + 1, "increase"))
       }
     }
-
   }
   //获取
   get(key) {
